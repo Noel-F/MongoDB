@@ -7,13 +7,17 @@ import config from './config';
 import routes from './routes';
 
 let app = express();
-app.server = http:createServer(app);
+app.server = http.createServer(app);
 
-//middlewear
+//: Middlewear
+//: Parse application/json
+app.use(bodyParser.json({
+  limit: config.bodyLimit
+}));
 
-//passport config
+//: Passport config
 
-//api routes v1
+//: API routes v1
 app.use('/v1', routes);
 
 app.server.listen(config.port);
