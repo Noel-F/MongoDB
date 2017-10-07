@@ -3,12 +3,14 @@ import {Router} from 'express';
 import FoodTruck from '../model/foodtruck';
 import Review from '../model/review';
 
+import {authenticate} from '../middleware/authMiddleware';
+
 export default({config, db}) => {
   let api = Router();
 
   //: C.R.U.D
   //: /v1/foodtruck/add - Create
-  api.post('/add', (req, res) => {
+  api.post('/add', authenticate, (req, res) => {
     let newFoodTruck = new FoodTruck();
     newFoodTruck.name = req.body.name;
     newFoodTruck.foodtype = req.body.foodtype;
@@ -116,6 +118,17 @@ export default({config, db}) => {
         res.send(err);
       }
       res.json(reviews);
+    });
+  });
+
+  //: Get foodtype for specific food truck.
+  //: /v1/foodtruck/reviews/:id
+  api.get('/foodtype/:foodtype',(req, res) => {
+    FoodTruck.find({foodtype: req.params.foodtype}, (err, foodtruck) => {
+      if (err) {
+        res.send(err);
+      }
+      res.json(foodtruck);
     });
   });
 
