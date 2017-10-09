@@ -15,7 +15,7 @@ export default ({ config, db }) => {
     res.status(200).send({ user: req.user });
   });
 
-  // '/v1/account/register' - Registers new user.
+  // '/v1/account/register'
   api.post('/register', (req, res) => {
     Account.register(new Account({ username: req.body.email}), req.body.password, function(err, account) {
       if (err) {
@@ -26,31 +26,26 @@ export default ({ config, db }) => {
         'local', {
           session: false
       })(req, res, () => {
-        res.status(200).send('Successfully created new account');
+        res.status(200).send('Successfully created new account...');
       });
     });
   });
 
-  // '/v1/account/login' - Logs in user.
+  // '/v1/account/login'
   api.post('/login', passport.authenticate(
     'local', {
       session: false,
       scope: []
     }), generateAccessToken, respond);
 
-  // '/v1/account/logout' - Logs out user.
+  // '/v1/account/logout'
   api.get('/logout', authenticate, (req, res) => {
     req.logout();
-    res.status(200).send('Successfully logged out');
+    res.status(200).send('Successfully logged out...');
   });
 
   api.get('/me', authenticate, (req, res) => {
     res.status(200).json(req.user);
-  });
-
-  // '/v1/account/ping'
-  api.get('/ping', (req, res) => {
-    res.status(200).send("pong!");
   });
 
   return api;

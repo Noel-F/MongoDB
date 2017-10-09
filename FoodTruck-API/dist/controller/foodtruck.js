@@ -1,18 +1,44 @@
-import mongoose from 'mongoose';
-import { Router } from 'express';
-import FoodTruck from '../model/foodtruck';
-import Review from '../model/review';
-import bodyParser from 'body-parser';
-import passport from 'passport';
+'use strict';
 
-import { authenticate } from '../middleware/authMiddleware';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-export default({ config, db }) => {
-  let api = Router();
+var _mongoose = require('mongoose');
+
+var _mongoose2 = _interopRequireDefault(_mongoose);
+
+var _express = require('express');
+
+var _foodtruck = require('../model/foodtruck');
+
+var _foodtruck2 = _interopRequireDefault(_foodtruck);
+
+var _review = require('../model/review');
+
+var _review2 = _interopRequireDefault(_review);
+
+var _bodyParser = require('body-parser');
+
+var _bodyParser2 = _interopRequireDefault(_bodyParser);
+
+var _passport = require('passport');
+
+var _passport2 = _interopRequireDefault(_passport);
+
+var _authMiddleware = require('../middleware/authMiddleware');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (_ref) {
+  var config = _ref.config,
+      db = _ref.db;
+
+  var api = (0, _express.Router)();
 
   // '/v1/foodtruck' - GET all food trucks
-  api.get('/', (req, res) => {
-    FoodTruck.find({}, (err, foodtrucks) => {
+  api.get('/', function (req, res) {
+    _foodtruck2.default.find({}, function (err, foodtrucks) {
       if (err) {
         res.send(err);
       }
@@ -21,8 +47,8 @@ export default({ config, db }) => {
   });
 
   // '/v1/foodtruck/:id' - GET a specific food truck
-  api.get('/:id', (req, res) => {
-    FoodTruck.findById(req.params.id, (err, foodtruck) => {
+  api.get('/:id', function (req, res) {
+    _foodtruck2.default.findById(req.params.id, function (err, foodtruck) {
       if (err) {
         res.send(err);
       }
@@ -31,15 +57,15 @@ export default({ config, db }) => {
   });
 
   // '/v1/foodtruck/add' - POST - add a food truck
-  api.post('/add', authenticate, (req, res) => {
-    let newFoodTruck = new FoodTruck();
+  api.post('/add', _authMiddleware.authenticate, function (req, res) {
+    var newFoodTruck = new _foodtruck2.default();
     newFoodTruck.name = req.body.name;
     newFoodTruck.foodtype = req.body.foodtype;
     newFoodTruck.avgcost = req.body.avgcost;
     newFoodTruck.geometry.coordinates.lat = req.body.geometry.coordinates.lat;
     newFoodTruck.geometry.coordinates.long = req.body.geometry.coordinates.long;
 
-    newFoodTruck.save(function(err) {
+    newFoodTruck.save(function (err) {
       if (err) {
         res.send(err);
       }
@@ -48,8 +74,8 @@ export default({ config, db }) => {
   });
 
   // '/v1/foodtruck/:id' - DELETE - remove a food truck
-  api.delete('/:id', authenticate, (req, res) => {
-    FoodTruck.findById(req.params.id, (err, foodtruck) => {
+  api.delete('/:id', _authMiddleware.authenticate, function (req, res) {
+    _foodtruck2.default.findById(req.params.id, function (err, foodtruck) {
       if (err) {
         res.status(500).send(err);
         return;
@@ -58,28 +84,28 @@ export default({ config, db }) => {
         res.status(404).send("FoodTruck not found...");
         return;
       }
-      FoodTruck.remove({
+      _foodtruck2.default.remove({
         _id: req.params.id
-      }, (err, foodtruck) => {
+      }, function (err, foodtruck) {
         if (err) {
           res.status(500).send(err);
           return;
         }
-        Review.remove({
+        _review2.default.remove({
           foodtruck: req.params.id
-        }, (err, review) => {
+        }, function (err, review) {
           if (err) {
             res.send(err);
           }
-          res.json({message: "Food Truck and Reviews Successfully Removed..."});
+          res.json({ message: "Food Truck and Reviews Successfully Removed..." });
         });
       });
     });
   });
 
   // '/v1/foodtruck/:id' - PUT - update an existing record
-  api.put('/:id', authenticate, (req, res) => {
-    FoodTruck.findById(req.params.id, (err, foodtruck) => {
+  api.put('/:id', _authMiddleware.authenticate, function (req, res) {
+    _foodtruck2.default.findById(req.params.id, function (err, foodtruck) {
       if (err) {
         res.send(err);
       }
@@ -88,7 +114,7 @@ export default({ config, db }) => {
       foodtruck.avgcost = req.body.avgcost;
       newFoodTruck.geometry.coordinates.lat = req.body.geometry.coordinates.lat;
       newFoodTruck.geometry.coordinates.long = req.body.geometry.coordinates.long;
-      foodtruck.save(function(err) {
+      foodtruck.save(function (err) {
         if (err) {
           res.send(err);
         }
@@ -99,22 +125,22 @@ export default({ config, db }) => {
 
   // add a review by a specific foodtruck id
   // '/v1/foodtruck/reviews/add/:id'
-  api.post('/reviews/add/:id', authenticate, (req, res) => {
-    FoodTruck.findById(req.params.id, (err, foodtruck) => {
+  api.post('/reviews/add/:id', _authMiddleware.authenticate, function (req, res) {
+    _foodtruck2.default.findById(req.params.id, function (err, foodtruck) {
       if (err) {
         res.send(err);
       }
-      let newReview = new Review();
+      var newReview = new _review2.default();
 
       newReview.title = req.body.title;
       newReview.text = req.body.text;
       newReview.foodtruck = foodtruck._id;
-      newReview.save((err, review) => {
+      newReview.save(function (err, review) {
         if (err) {
           res.send(err);
         }
         foodtruck.reviews.push(newReview);
-        foodtruck.save(err => {
+        foodtruck.save(function (err) {
           if (err) {
             res.send(err);
           }
@@ -126,8 +152,8 @@ export default({ config, db }) => {
 
   // get reviews for a specific foodtruck id
   // '/v1/foodtruck/reviews/:id'
-  api.get('/reviews/:id', (req, res) => {
-    Review.find({foodtruck: req.params.id}, (err, reviews) => {
+  api.get('/reviews/:id', function (req, res) {
+    _review2.default.find({ foodtruck: req.params.id }, function (err, reviews) {
       if (err) {
         res.send(err);
       }
@@ -136,4 +162,5 @@ export default({ config, db }) => {
   });
 
   return api;
-}
+};
+//# sourceMappingURL=foodtruck.js.map

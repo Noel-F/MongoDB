@@ -1,21 +1,21 @@
 import express from 'express';
 import config from '../config';
-import middleware from '../middleware';
 import initializeDb from '../db';
+import middleware from '../middleware';
 import foodtruck from '../controller/foodtruck';
 import account from '../controller/account';
 
 let router = express();
 
-//: Connect to db
+// connect to db
 initializeDb(db => {
 
-  //: Internal middleware
-  router.use(middleware({config, db}));
+  // internal middleware
+  router.use(middleware({ config, db }));
 
-  //: API routes v1
-  router.use('/foodtruck', foodtruck({config, db}));
-  router.use('/account', account({config, db}));
+  // api routes v1 (/v1)
+  router.use('/foodtruck', foodtruck({ config, db }));
+  router.use('/account', account({ config, db }));
 });
 
 export default router;
