@@ -71,7 +71,7 @@ export default({ config, db }) => {
           if (err) {
             res.send(err);
           }
-          res.json({message: "Food Truck and Reviews Successfully Removed..."});
+          res.json({message: "Food Truck and Reviews Successfully Removed"});
         });
       });
     });
@@ -86,13 +86,13 @@ export default({ config, db }) => {
       foodtruck.name = req.body.name;
       foodtruck.foodtype = req.body.foodtype;
       foodtruck.avgcost = req.body.avgcost;
-      newFoodTruck.geometry.coordinates.lat = req.body.geometry.coordinates.lat;
-      newFoodTruck.geometry.coordinates.long = req.body.geometry.coordinates.long;
+      foodtruck.geometry.coordinates.lat = req.body.geometry.coordinates.lat;
+      foodtruck.geometry.coordinates.long = req.body.geometry.coordinates.long;
       foodtruck.save(function(err) {
         if (err) {
           res.send(err);
         }
-        res.json({ message: 'Food Truck info updated...' });
+        res.json({ message: 'Food Truck info updated' });
       });
     });
   });
@@ -118,7 +118,7 @@ export default({ config, db }) => {
           if (err) {
             res.send(err);
           }
-          res.json({ message: 'Food truck review saved...' });
+          res.json({ message: 'Food truck review saved' });
         });
       });
     });

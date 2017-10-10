@@ -7,7 +7,7 @@ import account from '../controller/account';
 
 let router = express();
 
-// connect to db
+// connect to d
 initializeDb(db => {
 
   // internal middleware

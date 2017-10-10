@@ -26,7 +26,7 @@ export default ({ config, db }) => {
         'local', {
           session: false
       })(req, res, () => {
-        res.status(200).send('Successfully created new account...');
+        res.status(200).send('Successfully created new account');
       });
     });
   });
@@ -41,7 +41,7 @@ export default ({ config, db }) => {
   // '/v1/account/logout'
   api.get('/logout', authenticate, (req, res) => {
     req.logout();
-    res.status(200).send('Successfully logged out...');
+    res.status(200).send('Successfully logged out');
   });
 
   api.get('/me', authenticate, (req, res) => {
