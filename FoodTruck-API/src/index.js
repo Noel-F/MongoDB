@@ -28,7 +28,7 @@ passport.use(new LocalStrategy({
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
-// api routes v1
+//: api routes v1
 app.use('/api/v1', routes);
 
 app.server.listen(config.port);
