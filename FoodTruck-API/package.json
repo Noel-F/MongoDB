@@ -1,9 +1,6 @@
 {
   "name": "foodtruck-api",
   "version": "0.0.1",
-  "engines": {
-    "node": "6.11.1"
-  },
   "description": "Food Truck API for sample project",
   "main": "dist",
   "scripts": {
