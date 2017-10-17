@@ -1,7 +1,10 @@
 # MongoDB
-My custom API built. This database is used for the Food Truck Finder app for [iOS](https://github.com/Noel-F/Android) and [Android](https://github.com/Noel-F/Android).
+My custom API built. This database is used for the Food Truck Finder app for [iOS](https://github.com/Noel-F/Android) and [Android](https://github.com/Noel-F/Android). Deployed API to a Live Server(Digital Ocean). API includes authentication and security as well as the following common request functionality found it APIs:
 
-
+- POST
+- GET
+- PUT
+- DELETE
 
 ### Built With
 * [MongoDB](https://www.mongodb.com/)
